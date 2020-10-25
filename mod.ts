@@ -59,7 +59,7 @@ export function connect (...args: string[]): Promise<string> {
         }
 
         let ngrok = Deno.run({
-            cmd: [bin, ...args],
+            cmd: [bin, "--log=stdout", ...args],
             stdout: "piped",
             stderr: "inherit",
         })

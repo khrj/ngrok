@@ -10,6 +10,8 @@ interface NgrokOptions {
     extraArgs?: string[];
 }
 
+let ngrok: any;
+
 export function connect (options: NgrokOptions): Promise<string> {
     return new Promise(async (resolve, reject) => {
         const zip = join(Deno.env.get("HOME")!, ".ngrok-deno", "ngrok.zip");
@@ -73,7 +75,7 @@ export function connect (options: NgrokOptions): Promise<string> {
         if (options.extraArgs) args.push(...options.extraArgs)
         args.push(options.port.toString())
 
-        let ngrok = Deno.run({
+        ngrok = Deno.run({
             cmd: [bin, ...args],
             stdout: "piped",
             stderr: "inherit",
@@ -94,4 +96,8 @@ export function connect (options: NgrokOptions): Promise<string> {
             reject(`Error: ngrok exited with code ${status.code}`) // (╯°□°）╯︵ ┻━┻
         }
     })
+}
+
+export function disconnect (code?: number) {
+    ngrok.kill(code || 15) // Deno.Signal.SIGTERM
 }

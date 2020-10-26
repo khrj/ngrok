@@ -20,6 +20,17 @@ interface NgrokOptions {
 }
 ```
 
+### Disconnecting
+
+Due to the way Deno currently works, ngrok will continue running in the background even after your program exits unless you disconnect
+
+```
+import { disconnect } from 'https://deno.land/x/ngrok@2.0.0/mod.ts'
+disconnect()
+```
+
+- Optionally provide an exit code: `disconnect(9)`
+
 ## Permissions
 
 - --allow-read

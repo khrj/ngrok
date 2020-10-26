@@ -2,7 +2,15 @@ import { join } from "https://deno.land/std@0.74.0/path/mod.ts"
 import { existsSync } from "https://deno.land/std@0.74.0/fs/mod.ts"
 import { readLines } from "https://deno.land/std@0.74.0/io/mod.ts";
 
-export function connect (...args: string[]): Promise<string> {
+interface NgrokOptions {
+    protocol: string;
+    port: number;
+    region?: string;
+    subdomain?: string;
+    extraArgs?: string[];
+}
+
+export function connect (options: NgrokOptions): Promise<string> {
     return new Promise(async (resolve, reject) => {
         const zip = join(Deno.env.get("HOME")!, ".ngrok-deno", "ngrok.zip");
         const cacheDir = join(Deno.env.get("HOME")!, ".ngrok-deno");
@@ -58,8 +66,15 @@ export function connect (...args: string[]): Promise<string> {
             Deno.removeSync(zip)
         }
 
+        const args: string[] = []
+        args.push(options.protocol, "--log=stdout")
+        if (options.region) args.push(`--region=${options.region}`)
+        if (options.subdomain) args.push(`--subdomain=${options.subdomain}`)
+        if (options.extraArgs) args.push(...options.extraArgs)
+        args.push(options.port.toString())
+
         let ngrok = Deno.run({
-            cmd: [bin, "--log=stdout", ...args],
+            cmd: [bin, ...args],
             stdout: "piped",
             stderr: "inherit",
         })

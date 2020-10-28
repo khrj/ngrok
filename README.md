@@ -16,6 +16,7 @@ interface NgrokOptions {
     port: number;
     region?: string;
     subdomain?: string;
+    authtoken?: string;
     extraArgs?: string[];
 }
 ```

@@ -15,9 +15,10 @@ let ngrok: any;
 
 export function connect (options: NgrokOptions): Promise<string> {
     return new Promise(async (resolve, reject) => {
-        const zip = join(Deno.env.get("HOME")!, ".ngrok-deno", "ngrok.zip");
-        const cacheDir = join(Deno.env.get("HOME")!, ".ngrok-deno");
-        const bin = join(Deno.env.get("HOME")!, ".ngrok-deno", "ngrok")
+        const homeDir: string = (Deno.env.get("HOME") || Deno.env.get("userprofile"))!
+        const zip = join(homeDir, ".ngrok-deno", "ngrok.zip");
+        const cacheDir = join(homeDir, ".ngrok-deno");
+        const bin = join(homeDir, ".ngrok-deno", "ngrok")
         const fileURL = ((_) => {
             const arch = Deno.build.os
             const cdn = "https://bin.equinox.io"

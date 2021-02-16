@@ -66,3 +66,9 @@ Also requires --unstable
 ```bash
 deno run --unstable --allow-read --allow-write --allow-env --allow-net --allow-run test.ts
 ```
+
+## Supporters
+
+[![Stargazers repo roster for @KhushrajRathod/ngrok](https://reporoster.com/stars/KhushrajRathod/ngrok)](https://github.com/KhushrajRathod/ngrok/stargazers)
+
+[![Forkers repo roster for @KhushrajRathod/ngrok](https://reporoster.com/forks/KhushrajRathod/ngrok)](https://github.com/KhushrajRathod/ngrok/network/members)

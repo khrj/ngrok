@@ -1,23 +1,26 @@
-import { join } from "https://deno.land/std@0.74.0/path/mod.ts"
-import { existsSync } from "https://deno.land/std@0.74.0/fs/mod.ts"
-import { readLines } from "https://deno.land/std@0.74.0/io/mod.ts";
+import { readLines, existsSync, join } from './deps.ts'
 
 interface NgrokOptions {
-    protocol: string;
-    port: number;
-    region?: string;
-    subdomain?: string;
-    authtoken?: string;
-    extraArgs?: string[];
+    protocol: string
+    port: number
+    region?: string
+    subdomain?: string
+    authtoken?: string
+    extraArgs?: string[]
 }
 
-let ngrok: any;
+let ngrok: Deno.Process<{
+    cmd: [string, ...string[]]
+    stdout: "piped"
+    stderr: "inherit"
+}>
 
-export function connect (options: NgrokOptions): Promise<string> {
+export function connect(options: NgrokOptions): Promise<string> {
+    // deno-lint-ignore no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         const homeDir: string = (Deno.env.get("HOME") || Deno.env.get("userprofile"))!
-        const zip = join(homeDir, ".ngrok-deno", "ngrok.zip");
-        const cacheDir = join(homeDir, ".ngrok-deno");
+        const zip = join(homeDir, ".ngrok-deno", "ngrok.zip")
+        const cacheDir = join(homeDir, ".ngrok-deno")
         const bin = join(homeDir, ".ngrok-deno", "ngrok")
         const fileURL = ((_) => {
             const arch = Deno.build.os
@@ -93,7 +96,7 @@ export function connect (options: NgrokOptions): Promise<string> {
             }
         }
 
-        let status = await ngrok.status()
+        const status = await ngrok.status()
 
         if (!status.success) {
             reject(`Error: ngrok exited with code ${status.code}`) // (╯°□°）╯︵ ┻━┻
@@ -101,6 +104,6 @@ export function connect (options: NgrokOptions): Promise<string> {
     })
 }
 
-export function disconnect (code?: number) {
+export function disconnect(code?: number) {
     ngrok.kill(code || 15) // Deno.Signal.SIGTERM
 }

@@ -23,7 +23,7 @@
 ## Usage
 
 ```ts
-import { connect } from "https://deno.land/x/ngrok@2.2.4/mod.ts"
+import { connect } from "https://deno.land/x/ngrok@2.2.5/mod.ts"
 const url = await connect({ protocol: "http", port: "8080" })
 console.log(url) // Outputs a URL without the protocol, such as "33a229cb0344.ngrok.io"
 ```
@@ -47,7 +47,7 @@ Due to the way Deno currently works, ngrok will continue running in the
 background even after your program exits unless you disconnect
 
 ```
-import { disconnect } from 'https://deno.land/x/ngrok@2.2.4/mod.ts'
+import { disconnect } from 'https://deno.land/x/ngrok@2.2.5/mod.ts'
 disconnect()
 ```
 
@@ -72,3 +72,7 @@ deno run --unstable --allow-read --allow-write --allow-env --allow-net --allow-r
 [![Stargazers repo roster for @KhushrajRathod/ngrok](https://reporoster.com/stars/KhushrajRathod/ngrok)](https://github.com/KhushrajRathod/ngrok/stargazers)
 
 [![Forkers repo roster for @KhushrajRathod/ngrok](https://reporoster.com/forks/KhushrajRathod/ngrok)](https://github.com/KhushrajRathod/ngrok/network/members)
+
+## Related
+
+- [Deno modules](https://github.com/KhushrajRathod/denoModules)

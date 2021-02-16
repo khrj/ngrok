@@ -1,6 +1,24 @@
-# ngrok
-
-Expose your localhost to the web. Ultra-simple deno wrapper for ngrok.
+<div align="center">
+    <img src="assets/logo.svg" width="350" height="350" alt="trains between usb and usb port abstract illustration">
+    <h1>ngrok</h1>
+    <p>
+        <b>Expose your localhost to the web. Ultra-simple deno wrapper for ngrok</b>
+    </p>
+    <p>
+        <img alt="build status" src="https://img.shields.io/github/workflow/status/KhushrajRathod/ngrok/Deno?label=checks" >
+        <img alt="language" src="https://img.shields.io/github/languages/top/KhushrajRathod/ngrok" >
+        <img alt="code size" src="https://img.shields.io/github/languages/code-size/KhushrajRathod/ngrok">
+        <img alt="issues" src="https://img.shields.io/github/issues/KhushrajRathod/ngrok" >
+        <img alt="license" src="https://img.shields.io/github/license/KhushrajRathod/ngrok">
+        <img alt="version" src="https://img.shields.io/github/v/release/KhushrajRathod/ngrok">
+    </p>
+    <p>
+        <b><a href="https://deno.land/x/ngrok">View on deno.land</a></b>
+    </p>
+    <br>
+    <br>
+    <br>
+</div>
 
 ## Usage
 

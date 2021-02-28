@@ -23,12 +23,23 @@
 ## Usage
 
 ```ts
-import { connect } from "https://deno.land/x/ngrok@2.2.5/mod.ts"
-const url = await connect({ protocol: "http", port: "8080" })
-console.log(url) // Outputs a URL without the protocol, such as "33a229cb0344.ngrok.io"
+import { Ngrok } from "https://deno.land/x/ngrok@3.0.0/mod.ts"
+
+const ngrok = await Ngrok.create({
+    protocol: "http",
+    port: 8080,
+})
+
+ngrok.addEventListener("ready", (event) => {
+    console.log(event.detail) // Outputs a URL without the protocol, such as "33a229cb0344.ngrok.io"
+})
+
+// ...
+
+ngrok.destroy()
 ```
 
-- connect accepts NgrokOptions
+- `Ngrok.create` accepts `NgrokOptions`
 
 ```ts
 interface NgrokOptions {
@@ -43,15 +54,25 @@ interface NgrokOptions {
 
 ### Disconnecting
 
-Due to the way Deno currently works, ngrok will continue running in the
-background even after your program exits unless you disconnect
+Due to the way child-processes work, ngrok will continue running in the
+background even after your program exits unless you destroy the instance
 
-```
-import { disconnect } from 'https://deno.land/x/ngrok@2.2.5/mod.ts'
-disconnect()
+```ts
+import { Ngrok } from "https://deno.land/x/ngrok@3.0.0/mod.ts"
+
+const ngrok = await Ngrok.create({
+    protocol: "http",
+    port: 8080,
+})
+
+ngrok.destroy()
 ```
 
-- Optionally provide an exit code: `disconnect(9)`
+- Optionally provide an exit code: `ngrok.destroy(9)`
+
+### API
+
+See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@3.0.0/mod.ts)
 
 ## Permissions
 
@@ -65,6 +86,12 @@ Also requires --unstable
 
 ```bash
 deno run --unstable --allow-read --allow-write --allow-env --allow-net --allow-run test.ts
+```
+
+alternatively, specify only -A
+
+```bash
+deno run --unstable -A test.ts
 ```
 
 ## Supporters

@@ -1,4 +1,11 @@
-import { readLines, existsSync, join } from './deps.ts'
+import { exists, join, readLines, TypedCustomEvent, TypedEventTarget } from "./deps.ts"
+
+type Events = {
+    status: Deno.ProcessStatus
+    stdout: string
+    stderr: string
+    ready: string
+}
 
 interface NgrokOptions {
     protocol: string
@@ -9,15 +16,28 @@ interface NgrokOptions {
     extraArgs?: string[]
 }
 
-let ngrok: Deno.Process<{
-    cmd: [string, ...string[]]
-    stdout: "piped"
-    stderr: "inherit"
-}>
+export class Ngrok extends TypedEventTarget<Events> {
+    private instance: Deno.Process<{
+        cmd: [string, ...string[]]
+        stdout: "piped"
+        stderr: "piped"
+    }>
 
-export function connect(options: NgrokOptions): Promise<string> {
-    // deno-lint-ignore no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
+    private constructor(bin: string, args: string[]) {
+        super()
+
+        this.instance = Deno.run({
+            cmd: [bin, ...args],
+            stdout: "piped",
+            stderr: "piped",
+        })
+
+        this.handleStdout()
+        this.handleStderr()
+        this.handleStatus()
+    }
+
+    static async create(options: NgrokOptions) {
         const homeDir: string = (Deno.env.get("HOME") || Deno.env.get("userprofile"))!
         const zip = join(homeDir, ".ngrok-deno", "ngrok.zip")
         const cacheDir = join(homeDir, ".ngrok-deno")
@@ -40,8 +60,8 @@ export function connect(options: NgrokOptions): Promise<string> {
             return cdn + cdnPath + url
         })()
 
-        if (!existsSync(bin)) {
-            Deno.mkdirSync(cacheDir, { recursive: true })
+        if (!(await exists(bin))) {
+            await Deno.mkdir(cacheDir, { recursive: true })
             const file = await Deno.open(zip, { write: true, create: true })
             const res = await fetch(fileURL)
 
@@ -70,7 +90,7 @@ export function connect(options: NgrokOptions): Promise<string> {
                 stderr: "inherit",
             }).status()
 
-            Deno.removeSync(zip)
+            await Deno.remove(zip)
         }
 
         const args: string[] = []
@@ -81,29 +101,37 @@ export function connect(options: NgrokOptions): Promise<string> {
         if (options.extraArgs) args.push(...options.extraArgs)
         args.push(options.port.toString())
 
-        ngrok = Deno.run({
-            cmd: [bin, ...args],
-            stdout: "piped",
-            stderr: "inherit",
-        })
+        return new Ngrok(bin, args)
+    }
 
+    destroy(code?: number) {
+        this.instance.kill(code || 15)
+    }
+
+    private async handleStdout() {
         const ready = /started tunnel.*:\/\/(.*)/
+        let readyEventSent = false
 
-        for await (const line of readLines(ngrok.stdout)) {
-            const isReady = line.match(ready)
-            if (isReady) {
-                resolve(isReady[1])
+        for await (const line of readLines(this.instance.stdout)) {
+            this.dispatchEvent(new TypedCustomEvent("stdout", { detail: line }))
+
+            if (!readyEventSent) {
+                const isReady = line.match(ready)
+                if (isReady) {
+                    readyEventSent = true
+                    this.dispatchEvent(new TypedCustomEvent("ready", { detail: isReady[1] }))
+                }
             }
         }
+    }
 
-        const status = await ngrok.status()
-
-        if (!status.success) {
-            reject(`Error: ngrok exited with code ${status.code}`) // (╯°□°）╯︵ ┻━┻
+    private async handleStderr() {
+        for await (const line of readLines(this.instance.stderr)) {
+            this.dispatchEvent(new TypedCustomEvent("stderr", { detail: line }))
         }
-    })
-}
+    }
 
-export function disconnect(code?: number) {
-    ngrok.kill(code || 15) // Deno.Signal.SIGTERM
+    private async handleStatus() {
+        this.dispatchEvent(new TypedCustomEvent("status", { detail: await this.instance.status() }))
+    }
 }

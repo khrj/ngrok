@@ -106,6 +106,8 @@ export class Ngrok extends TypedEventTarget<Events> {
 
     destroy(code?: number) {
         this.instance.kill(code || 15)
+        this.instance.stdout.close()
+        this.instance.stderr.close()
     }
 
     private async handleStdout() {

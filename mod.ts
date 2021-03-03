@@ -105,31 +105,42 @@ export class Ngrok extends TypedEventTarget<Events> {
     }
 
     destroy(code?: number) {
-        this.instance.kill(code || 15)
         this.instance.stdout.close()
         this.instance.stderr.close()
+        this.instance.kill(code || 15)
+        this.instance.close()
     }
 
     private async handleStdout() {
         const ready = /started tunnel.*:\/\/(.*)/
         let readyEventSent = false
 
-        for await (const line of readLines(this.instance.stdout)) {
-            this.dispatchEvent(new TypedCustomEvent("stdout", { detail: line }))
+        try {
+            for await (const line of readLines(this.instance.stdout)) {
+                this.dispatchEvent(new TypedCustomEvent("stdout", { detail: line }))
 
-            if (!readyEventSent) {
-                const isReady = line.match(ready)
-                if (isReady) {
-                    readyEventSent = true
-                    this.dispatchEvent(new TypedCustomEvent("ready", { detail: isReady[1] }))
+                if (!readyEventSent) {
+                    const isReady = line.match(ready)
+                    if (isReady) {
+                        readyEventSent = true
+                        this.dispatchEvent(new TypedCustomEvent("ready", { detail: isReady[1] }))
+                    }
                 }
             }
+        } catch (e) {
+            // Process killed via destroy()
+            return
         }
     }
 
     private async handleStderr() {
-        for await (const line of readLines(this.instance.stderr)) {
-            this.dispatchEvent(new TypedCustomEvent("stderr", { detail: line }))
+        try {
+            for await (const line of readLines(this.instance.stderr)) {
+                this.dispatchEvent(new TypedCustomEvent("stderr", { detail: line }))
+            }
+        } catch (e) {
+            // Process killed via destroy()
+            return
         }
     }
 

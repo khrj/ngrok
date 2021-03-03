@@ -75,7 +75,7 @@ export class Ngrok extends TypedEventTarget<Events> {
 
             file.close()
 
-            await Deno.run({
+            const unzip = Deno.run({
                 cmd: Deno.build.os === "windows"
                     ? [
                         "PowerShell",
@@ -88,7 +88,10 @@ export class Ngrok extends TypedEventTarget<Events> {
                     : ["unzip", zip, "-d", cacheDir],
                 stdout: "null",
                 stderr: "inherit",
-            }).status()
+            })
+
+            await unzip.status()
+            unzip.close()
 
             await Deno.remove(zip)
         }

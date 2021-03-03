@@ -23,7 +23,7 @@
 ## Usage
 
 ```ts
-import { Ngrok } from "https://deno.land/x/ngrok@3.1.0/mod.ts"
+import { Ngrok } from "https://deno.land/x/ngrok@3.1.1/mod.ts"
 
 const ngrok = await Ngrok.create({
     protocol: "http",
@@ -58,7 +58,7 @@ Due to the way child-processes work, ngrok will continue running in the
 background even after your program exits unless you destroy the instance
 
 ```ts
-import { Ngrok } from "https://deno.land/x/ngrok@3.1.0/mod.ts"
+import { Ngrok } from "https://deno.land/x/ngrok@3.1.1/mod.ts"
 
 const ngrok = await Ngrok.create({
     protocol: "http",
@@ -72,7 +72,7 @@ await ngrok.destroy()
 
 ### API
 
-See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@3.1.0/mod.ts)
+See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@3.1.1/mod.ts)
 
 ## Permissions
 

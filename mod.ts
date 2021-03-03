@@ -104,11 +104,17 @@ export class Ngrok extends TypedEventTarget<Events> {
         return new Ngrok(bin, args)
     }
 
-    destroy(code?: number) {
+    destroy(code?: number): Promise<void> {
         this.instance.stdout.close()
         this.instance.stderr.close()
         this.instance.kill(code || 15)
         this.instance.close()
+
+        return new Promise(resolve => {
+            this.addEventListener("status", () => {
+                resolve()
+            })
+        })
     }
 
     private async handleStdout() {

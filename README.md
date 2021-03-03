@@ -36,7 +36,7 @@ ngrok.addEventListener("ready", (event) => {
 
 // ...
 
-ngrok.destroy()
+await ngrok.destroy()
 ```
 
 - `Ngrok.create` accepts `NgrokOptions`
@@ -65,10 +65,10 @@ const ngrok = await Ngrok.create({
     port: 8080,
 })
 
-ngrok.destroy()
+await ngrok.destroy()
 ```
 
-- Optionally provide an exit code: `ngrok.destroy(9)`
+- Optionally provide an exit code: `await ngrok.destroy(9)`
 
 ### API
 

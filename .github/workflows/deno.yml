@@ -25,3 +25,6 @@ jobs:
 
       - name: Run Lint
         run: deno lint --unstable
+
+      - name: Run Tests
+        run: deno test --unstable -A

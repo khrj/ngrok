@@ -5,12 +5,12 @@
         <b>Expose your localhost to the web. Ultra-simple deno wrapper for ngrok</b>
     </p>
     <p>
-        <img alt="build status" src="https://img.shields.io/github/workflow/status/KhushrajRathod/ngrok/Deno?label=checks" >
-        <img alt="language" src="https://img.shields.io/github/languages/top/KhushrajRathod/ngrok" >
-        <img alt="code size" src="https://img.shields.io/github/languages/code-size/KhushrajRathod/ngrok">
-        <img alt="issues" src="https://img.shields.io/github/issues/KhushrajRathod/ngrok" >
-        <img alt="license" src="https://img.shields.io/github/license/KhushrajRathod/ngrok">
-        <img alt="version" src="https://img.shields.io/github/v/release/KhushrajRathod/ngrok">
+        <img alt="build status" src="https://img.shields.io/github/workflow/status/khrj/ngrok/Deno?label=checks" >
+        <img alt="language" src="https://img.shields.io/github/languages/top/khrj/ngrok" >
+        <img alt="code size" src="https://img.shields.io/github/languages/code-size/khrj/ngrok">
+        <img alt="issues" src="https://img.shields.io/github/issues/khrj/ngrok" >
+        <img alt="license" src="https://img.shields.io/github/license/khrj/ngrok">
+        <img alt="version" src="https://img.shields.io/github/v/release/khrj/ngrok">
     </p>
     <p>
         <b><a href="https://deno.land/x/ngrok">View on deno.land</a></b>
@@ -96,10 +96,10 @@ deno run --unstable -A test.ts
 
 ## Supporters
 
-[![Stargazers repo roster for @KhushrajRathod/ngrok](https://reporoster.com/stars/KhushrajRathod/ngrok)](https://github.com/KhushrajRathod/ngrok/stargazers)
+[![Stargazers repo roster for @khrj/ngrok](https://reporoster.com/stars/khrj/ngrok)](https://github.com/khrj/ngrok/stargazers)
 
-[![Forkers repo roster for @KhushrajRathod/ngrok](https://reporoster.com/forks/KhushrajRathod/ngrok)](https://github.com/KhushrajRathod/ngrok/network/members)
+[![Forkers repo roster for @khrj/ngrok](https://reporoster.com/forks/khrj/ngrok)](https://github.com/khrj/ngrok/network/members)
 
 ## Related
 
-- [Deno modules](https://github.com/KhushrajRathod/denoModules)
+- [Deno modules](https://github.com/khrj/deno-modules)

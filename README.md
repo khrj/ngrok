@@ -68,7 +68,7 @@ const ngrok = await Ngrok.create({
 await ngrok.destroy()
 ```
 
-- Optionally provide an exit code: `await ngrok.destroy(9)`
+- Optionally provide an exit code: `await ngrok.destroy("SIGKILL")`
 
 ### API
 

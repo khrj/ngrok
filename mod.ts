@@ -1,4 +1,4 @@
-import { exists, join, readLines, TypedCustomEvent, TypedEventTarget } from "./deps.ts"
+import { exists, join, readLines, TypedCustomEvent, TypedEventTarget, semverSatisfies } from "./deps.ts"
 
 type Events = {
     status: Deno.ProcessStatus
@@ -107,10 +107,11 @@ export class Ngrok extends TypedEventTarget<Events> {
         return new Ngrok(bin, args)
     }
 
-    destroy(code?: Deno.Signal): Promise<void> {
+    destroy(): Promise<void> {
+        const signal: any = semverSatisfies(Deno.version.deno, ">=1.14.0") ? "SIGTERM" : 15;
         this.instance.stdout.close()
         this.instance.stderr.close()
-        this.instance.kill(code || "SIGTERM")
+        this.instance.kill(signal)
         this.instance.close()
 
         return new Promise(resolve => {

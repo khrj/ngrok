@@ -1,4 +1,4 @@
-import { exists, join, readLines, TypedCustomEvent, TypedEventTarget } from "./deps.ts"
+import { copy, exists, join, readerFromStreamReader, readLines, TypedCustomEvent, TypedEventTarget } from "./deps.ts"
 
 type Events = {
     status: Deno.ProcessStatus
@@ -66,9 +66,8 @@ export class Ngrok extends TypedEventTarget<Events> {
             const res = await fetch(fileURL)
 
             if (res?.body) {
-                for await (const chunk of res.body) {
-                    await Deno.writeAll(file, chunk)
-                }
+                const reader = readerFromStreamReader(res.body.getReader())
+                await copy(reader, file)
             } else {
                 throw "Ngrok download URL invalid, open a new issue"
             }
@@ -107,10 +106,10 @@ export class Ngrok extends TypedEventTarget<Events> {
         return new Ngrok(bin, args)
     }
 
-    destroy(code?: number): Promise<void> {
+    destroy(signal?: Deno.Signal): Promise<void> {
         this.instance.stdout.close()
         this.instance.stderr.close()
-        this.instance.kill(code || 15)
+        this.instance.kill(signal || "SIGTERM")
         this.instance.close()
 
         return new Promise(resolve => {
@@ -136,7 +135,7 @@ export class Ngrok extends TypedEventTarget<Events> {
                     }
                 }
             }
-        } catch (e) {
+        } catch {
             // Process killed via destroy()
             return
         }
@@ -147,7 +146,7 @@ export class Ngrok extends TypedEventTarget<Events> {
             for await (const line of readLines(this.instance.stderr)) {
                 this.dispatchEvent(new TypedCustomEvent("stderr", { detail: line }))
             }
-        } catch (e) {
+        } catch {
             // Process killed via destroy()
             return
         }

@@ -13,6 +13,9 @@
         <img alt="version" src="https://img.shields.io/github/v/release/khrj/ngrok">
     </p>
     <p>
+        <b>Tested on Deno 1.18.1</b>
+    </p>
+    <p>
         <b><a href="https://deno.land/x/ngrok">View on deno.land</a></b>
     </p>
     <br>
@@ -23,7 +26,7 @@
 ## Usage
 
 ```ts
-import { Ngrok } from "https://deno.land/x/ngrok@3.1.1/mod.ts"
+import { Ngrok } from "https://deno.land/x/ngrok@4.0.1/mod.ts"
 
 const ngrok = await Ngrok.create({
     protocol: "http",
@@ -58,7 +61,7 @@ Due to the way child-processes work, ngrok will continue running in the
 background even after your program exits unless you destroy the instance
 
 ```ts
-import { Ngrok } from "https://deno.land/x/ngrok@3.1.1/mod.ts"
+import { Ngrok } from "https://deno.land/x/ngrok@4.0.1/mod.ts"
 
 const ngrok = await Ngrok.create({
     protocol: "http",
@@ -68,11 +71,11 @@ const ngrok = await Ngrok.create({
 await ngrok.destroy()
 ```
 
-- Optionally provide an exit code: `await ngrok.destroy(9)`
+- Optionally provide an exit code: `await ngrok.destroy("SIGKILL")`
 
 ### API
 
-See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@3.1.1/mod.ts)
+See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@4.0.1/mod.ts)
 
 ## Permissions
 

@@ -25,13 +25,9 @@ Deno.test({
 Deno.test({
     name: "Self HTTP Request",
     fn: async () => {
-        const server = serve({ port })
-        ;(async () => {
-            for await (const request of server) {
-                request.respond({ status: 200, body: exchange })
-            }
-        })()
-
+        const controller = new AbortController()
+        const server = serve((_req) => new Response(exchange), { port, signal: controller.signal })
+        
         const ngrok = await Ngrok.create({
             protocol: "http",
             port,
@@ -47,6 +43,7 @@ Deno.test({
         assertEquals(response, exchange)
 
         await ngrok.destroy()
-        server.close()
+        controller.abort()
+        await server
     },
 })

@@ -13,9 +13,6 @@
         <img alt="version" src="https://img.shields.io/github/v/release/khrj/ngrok">
     </p>
     <p>
-        <b>Tested on Deno 1.18.1</b>
-    </p>
-    <p>
         <b><a href="https://deno.land/x/ngrok">View on deno.land</a></b>
     </p>
     <br>
@@ -26,7 +23,7 @@
 ## Usage
 
 ```ts
-import { Ngrok } from "https://deno.land/x/ngrok@4.0.1/mod.ts"
+import { Ngrok } from "https://deno.land/x/ngrok@4.0.2/mod.ts"
 
 const ngrok = await Ngrok.create({
     protocol: "http",
@@ -61,7 +58,7 @@ Due to the way child-processes work, ngrok will continue running in the
 background even after your program exits unless you destroy the instance
 
 ```ts
-import { Ngrok } from "https://deno.land/x/ngrok@4.0.1/mod.ts"
+import { Ngrok } from "https://deno.land/x/ngrok@4.0.2/mod.ts"
 
 const ngrok = await Ngrok.create({
     protocol: "http",
@@ -75,7 +72,7 @@ await ngrok.destroy()
 
 ### API
 
-See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@4.0.1/mod.ts)
+See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@4.0.2/mod.ts)
 
 ## Permissions
 
@@ -85,16 +82,14 @@ See [generated documentation](https://doc.deno.land/https/deno.land/x/ngrok@4.0.
 - --allow-net
 - --allow-run
 
-Also requires --unstable
-
 ```bash
-deno run --unstable --allow-read --allow-write --allow-env --allow-net --allow-run test.ts
+deno run --allow-read --allow-write --allow-env --allow-net --allow-run test.ts
 ```
 
 alternatively, specify only -A
 
 ```bash
-deno run --unstable -A test.ts
+deno run -A test.ts
 ```
 
 ## Supporters

@@ -26,10 +26,10 @@ jobs:
           deno-version: v1.x
 
       - name: Cache Dependencies
-        run: deno cache --unstable deps.ts
+        run: deno cache deps.ts
 
       - name: Run Lint
-        run: deno lint --unstable
+        run: deno lint
 
       - name: Run Tests
-        run: deno test --unstable -A
+        run: deno test -A

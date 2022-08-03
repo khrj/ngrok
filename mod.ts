@@ -99,7 +99,7 @@ export class Ngrok extends TypedEventTarget<Events> {
         args.push(options.protocol, "--log=stdout")
         if (options.region) args.push(`--region=${options.region}`)
         if (options.subdomain) args.push(`--subdomain=${options.subdomain}`)
-        if (options.authtoken) args.push(`--authtoken="${options.authtoken}"`)
+        if (options.authtoken) args.push(`--authtoken=${options.authtoken}`)
         if (options.extraArgs) args.push(...options.extraArgs)
         args.push(options.port.toString())
 
